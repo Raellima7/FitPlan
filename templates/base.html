@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FitPlan{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="{{ url_for('home') }}" class="logo">
+        <span class="logo-icon">🌿</span> FitPlan
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menu">☰</button>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('dieta_formulario') }}">Dieta</a></li>
+        <li><a href="{{ url_for('treino_formulario') }}">Treino</a></li>
+        <li><a href="{{ url_for('sobre') }}">Sobre o projeto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="container" style="padding-top: 24px;">
+          {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <strong>FitPlan</strong> — projeto de portfólio, versão MVP.<br>
+    As sugestões geradas são educacionais e não substituem acompanhamento profissional.
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

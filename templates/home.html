@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}FitPlan — Dieta e treino no seu ritmo{% endblock %}
+
+{% block content %}
+
+  <section class="hero">
+    <h1>FitPlan</h1>
+    <p class="slogan">Monte sua rotina de alimentação e treino de acordo com seus objetivos.</p>
+    <div class="hero-buttons">
+      <a href="{{ url_for('dieta_formulario') }}" class="btn btn-primary">🥗 Montar minha dieta</a>
+      <a href="{{ url_for('treino_formulario') }}" class="btn btn-secondary">🏋️ Montar meu treino</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Como o FitPlan funciona</h2>
+      <p class="section-subtitle">Simples, rápido e pensado para o seu objetivo</p>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">⚖️</div>
+          <h3>1. Conte seus dados</h3>
+          <p>Informe seu peso e objetivo atual — emagrecimento, manutenção ou ganho de massa.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🍽️</div>
+          <h3>2. Receba sua dieta</h3>
+          <p>Um cardápio semanal sugerido, com quantidades de cada alimento para cada refeição.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💪</div>
+          <h3>3. Receba seu treino</h3>
+          <p>Uma rotina de 5 dias, com exercícios, séries, repetições e tempo de descanso.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <h3>4. Evolua no seu ritmo</h3>
+          <p>Comece simples hoje — no futuro, acompanhe histórico, progresso e muito mais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--branco); border-top: 1px solid var(--cinza-borda); border-bottom: 1px solid var(--cinza-borda);">
+    <div class="container text-center">
+      <h2 class="section-title">Pronto para começar?</h2>
+      <p class="section-subtitle">Leva menos de 1 minuto para gerar sua primeira sugestão.</p>
+      <div class="hero-buttons">
+        <a href="{{ url_for('dieta_formulario') }}" class="btn btn-outline">🥗 Montar minha dieta</a>
+        <a href="{{ url_for('treino_formulario') }}" class="btn btn-outline">🏋️ Montar meu treino</a>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

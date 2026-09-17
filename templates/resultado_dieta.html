@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Sua sugestão de dieta — FitPlan{% endblock %}
+
+{% block content %}
+
+<section class="result-header">
+  <h1>🥗 Sua sugestão de dieta</h1>
+  <span class="badge">
+    Peso informado: {{ peso }} kg · Meta calórica estimada: {{ resultado.meta_kcal_estimada }} kcal/dia
+  </span>
+</section>
+
+<section class="result-body">
+  <div class="container">
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso importante</strong>
+      Esta sugestão é gerada de forma educacional e simplificada, com base apenas no peso e objetivo informados.
+      Ela não substitui a avaliação individual de um(a) nutricionista ou profissional de saúde, que pode
+      considerar exames, histórico e necessidades específicas.
+    </div>
+
+    {% for dia in resultado.plano_semanal %}
+      <div class="day-block">
+        <div class="day-header">Dia {{ dia.dia_numero }}</div>
+
+        {% for refeicao in dia.refeicoes %}
+          <div class="meal-block">
+            <h4>{{ refeicao.nome }}</h4>
+            <ul class="food-list">
+              {% for item in refeicao.itens %}
+                <li>
+                  <span>{{ item.nome }}</span>
+                  <span class="quantidade">{{ item.quantidade }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    <div class="actions-row">
+      <a href="{{ url_for('dieta_formulario') }}" class="btn btn-outline">↺ Gerar novamente</a>
+      <a href="{{ url_for('treino_formulario') }}" class="btn btn-secondary">🏋️ Montar meu treino também</a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
