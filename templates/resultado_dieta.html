@@ -7,9 +7,25 @@
 <section class="result-header">
   <h1>🥗 Sua sugestão de dieta</h1>
   <span class="badge">
-    Peso informado: {{ peso }} kg · Meta calórica estimada: {{ resultado.meta_kcal_estimada }} kcal/dia
+    Peso: {{ peso }} kg
+    {% if resultado.altura_cm %}· Altura: {{ resultado.altura_cm | int }} cm{% endif %}
+    · Meta calórica estimada: {{ resultado.meta_kcal_estimada }} kcal/dia
   </span>
 </section>
+
+{% if resultado.imc %}
+<section class="imc-banner">
+  <div class="container">
+    <div class="imc-card">
+      <div class="imc-valor">{{ resultado.imc }}</div>
+      <div class="imc-info">
+        <strong>Seu IMC estimado: {{ resultado.imc_classificacao }}</strong>
+        <span>O IMC é apenas uma referência geral (peso ÷ altura²) e não considera composição corporal, massa muscular ou outros fatores individuais.</span>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <section class="result-body">
   <div class="container">

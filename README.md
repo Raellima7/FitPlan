@@ -34,8 +34,7 @@ fitplan/
 │   ├── dieta.html
 │   ├── treino.html
 │   ├── resultado_dieta.html
-│   ├── resultado_treino.html
-│   └── sobre.html
+│   └── resultado_treino.html
 └── static/
     ├── css/style.css            # Estilo visual (moderno, saúde/academia)
     └── js/script.js             # Menu mobile
@@ -81,7 +80,6 @@ automaticamente na primeira execução — não é preciso configurar nada.
 | Resultado da dieta  | `/resultado-dieta`   | Cardápio semanal sugerido                       |
 | Treino              | `/treino`            | Formulário: objetivo do treino                  |
 | Resultado do treino | `/resultado-treino`  | Rotina de treino de 5 dias                      |
-| Sobre o projeto     | `/sobre`             | Explicação do projeto e roadmap futuro          |
 
 ---
 

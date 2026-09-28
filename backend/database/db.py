@@ -30,9 +30,11 @@ def inicializar_banco():
         CREATE TABLE IF NOT EXISTS solicitacoes_dieta (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             peso REAL NOT NULL,
+            altura REAL,
             objetivo TEXT NOT NULL,
             dias_semana INTEGER NOT NULL,
             meta_kcal_estimada REAL,
+            imc REAL,
             criado_em TEXT NOT NULL
         )
     """)
@@ -49,13 +51,13 @@ def inicializar_banco():
     conexao.close()
 
 
-def salvar_solicitacao_dieta(peso, objetivo, dias_semana, meta_kcal_estimada):
+def salvar_solicitacao_dieta(peso, objetivo, dias_semana, meta_kcal_estimada, altura=None, imc=None):
     conexao = conectar()
     cursor = conexao.cursor()
     cursor.execute(
-        """INSERT INTO solicitacoes_dieta (peso, objetivo, dias_semana, meta_kcal_estimada, criado_em)
-           VALUES (?, ?, ?, ?, ?)""",
-        (peso, objetivo, dias_semana, meta_kcal_estimada, datetime.now().isoformat()),
+        """INSERT INTO solicitacoes_dieta (peso, altura, objetivo, dias_semana, meta_kcal_estimada, imc, criado_em)
+           VALUES (?, ?, ?, ?, ?, ?, ?)""",
+        (peso, altura, objetivo, dias_semana, meta_kcal_estimada, imc, datetime.now().isoformat()),
     )
     conexao.commit()
     novo_id = cursor.lastrowid

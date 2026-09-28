@@ -87,6 +87,32 @@ def calcular_meta_calorica(peso_kg: float, objetivo: str) -> float:
     return round(peso_kg * fator)
 
 
+def calcular_imc(peso_kg: float, altura_cm: float):
+    """
+    Calcula o IMC (Índice de Massa Corporal) e retorna também uma
+    classificação textual simples, apenas para fins informativos.
+
+    IMC = peso (kg) / altura (m)^2
+    """
+    altura_m = altura_cm / 100
+    if altura_m <= 0:
+        return None, None
+
+    imc = peso_kg / (altura_m ** 2)
+    imc = round(imc, 1)
+
+    if imc < 18.5:
+        classificacao = "Abaixo do peso"
+    elif imc < 25:
+        classificacao = "Peso adequado"
+    elif imc < 30:
+        classificacao = "Sobrepeso"
+    else:
+        classificacao = "Obesidade"
+
+    return imc, classificacao
+
+
 def _formatar_quantidade(alimento_id: str, quantidade_escalada: float):
     """Formata a quantidade final para exibição, respeitando a unidade do alimento."""
     alimento = ALIMENTOS[alimento_id]
@@ -128,17 +154,26 @@ def montar_cardapio_do_dia(fator_escala: float):
     return dia
 
 
-def gerar_dieta(peso_kg: float, objetivo: str, dias_semana: int):
+def gerar_dieta(peso_kg: float, objetivo: str, dias_semana: int, altura_cm: float = None):
     """
     Gera a sugestão completa de dieta para a semana.
 
-    Retorna um dicionário com a meta calórica estimada e a lista de dias,
-    cada um contendo as refeições e os alimentos com quantidade.
+    A altura é opcional (compatibilidade com chamadas antigas), mas quando
+    informada permite calcular o IMC apenas como dado informativo — ela
+    ainda não altera o cálculo da meta calórica, que segue simplificado
+    (ver observações no topo do arquivo).
+
+    Retorna um dicionário com a meta calórica estimada, o IMC (se houver
+    altura) e a lista de dias, cada um contendo as refeições com quantidade.
     """
     meta_kcal = calcular_meta_calorica(peso_kg, objetivo)
     fator_escala = meta_kcal / KCAL_BASE_TEMPLATE
 
     dias_semana = max(1, min(7, int(dias_semana)))
+
+    imc, imc_classificacao = (None, None)
+    if altura_cm:
+        imc, imc_classificacao = calcular_imc(peso_kg, altura_cm)
 
     plano_semanal = []
     for numero_dia in range(1, dias_semana + 1):
@@ -151,5 +186,8 @@ def gerar_dieta(peso_kg: float, objetivo: str, dias_semana: int):
         "meta_kcal_estimada": meta_kcal,
         "objetivo": objetivo,
         "dias_semana": dias_semana,
+        "altura_cm": altura_cm,
+        "imc": imc,
+        "imc_classificacao": imc_classificacao,
         "plano_semanal": plano_semanal,
     }

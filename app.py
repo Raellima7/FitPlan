@@ -15,7 +15,6 @@ Rotas:
     /resultado-dieta -> Resultado da dieta (POST do formulário)
     /treino          -> Formulário para gerar treino
     /resultado-treino-> Resultado do treino (POST do formulário)
-    /sobre           -> Sobre o projeto
 """
 
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -40,11 +39,6 @@ def home():
     return render_template("home.html")
 
 
-@app.route("/sobre")
-def sobre():
-    return render_template("sobre.html")
-
-
 # ---------------------------------------------------------------------------
 # Fluxo de Dieta
 # ---------------------------------------------------------------------------
@@ -58,6 +52,8 @@ def dieta_formulario():
 def resultado_dieta():
     try:
         peso = float(request.form.get("peso", "").replace(",", "."))
+        altura_str = request.form.get("altura", "").replace(",", ".").strip()
+        altura = float(altura_str) if altura_str else None
         objetivo = request.form.get("objetivo")
         dias_semana = int(request.form.get("dias_semana", 5))
     except (ValueError, TypeError):
@@ -68,6 +64,10 @@ def resultado_dieta():
         flash("Informe um peso válido.")
         return redirect(url_for("dieta_formulario"))
 
+    if altura is not None and (altura <= 0 or altura > 260):
+        flash("Informe uma altura válida, em centímetros (ex.: 170).")
+        return redirect(url_for("dieta_formulario"))
+
     if objetivo not in OBJETIVOS_DIETA:
         flash("Selecione um objetivo válido.")
         return redirect(url_for("dieta_formulario"))
@@ -75,10 +75,13 @@ def resultado_dieta():
     if dias_semana < 1 or dias_semana > 7:
         dias_semana = 7
 
-    resultado = gerar_dieta(peso, objetivo, dias_semana)
+    resultado = gerar_dieta(peso, objetivo, dias_semana, altura_cm=altura)
 
     # Salva o registro da solicitação no banco (base para histórico futuro)
-    salvar_solicitacao_dieta(peso, objetivo, dias_semana, resultado["meta_kcal_estimada"])
+    salvar_solicitacao_dieta(
+        peso, objetivo, dias_semana, resultado["meta_kcal_estimada"],
+        altura=altura, imc=resultado["imc"],
+    )
 
     return render_template("resultado_dieta.html", resultado=resultado, peso=peso)
 
